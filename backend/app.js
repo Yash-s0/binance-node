@@ -8,7 +8,7 @@ app.use(bodyParser.json());
 
 app.get('/', (req, res) => {
     const hello = {
-        message: 'Hello World'
+        message: 'Hello World',
     };
     res.json(hello);
 });
@@ -25,9 +25,9 @@ app.post('/search', (req, res) => {
         }
         console.log(JSON.stringify(body))
 
-
         try {
             currentPrice = (JSON.stringify(body.lastPrice))
+            currentPrice = "\"123288.312\""
             console.log(currentPrice)
             message = JSON.stringify(body["msg"])
             console.log(message)
