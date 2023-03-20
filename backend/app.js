@@ -20,28 +20,40 @@ app.post('/search', (req, res) => {
     const url = `https://api.binance.com/api/v3/ticker/24hr?symbol=${symbol}`;
     request(url, { json: true }, (err, r, body) => {
         if (err) {
-            const eror = (JSOn.stringify(err))
+            const eror = (JSON.stringify(err))
             console.log(eror)
         }
-        currentPrice = (JSON.stringify(body.lastPrice))
-        console.log(currentPrice)
+        console.log(JSON.stringify(body))
 
-        if (currentPrice == undefined) {
+
+        try {
+            currentPrice = (JSON.stringify(body.lastPrice))
+            console.log(currentPrice)
+            message = JSON.stringify(body["msg"])
+            console.log(message)
+            if (message) {
+                const response_ = {
+                    success: "True",
+                    message: "Invalid Symbol!!!!"
+                }
+                res.status(200).json(response_);
+            } else {
+                const response_ = {
+                    success: "True",
+                    symbol: symbol,
+                    price: currentPrice,
+                }
+                res.status(200).json(response_);
+            }
+        } catch (err) {
             const response_ = {
-                message: "Success",
-                symbol: "Invalid Argument"
+                success: "Flase",
+                message: "Invalid Symbol!!!"
             }
             res.send(response_)
         }
-        const response_ = {
-            message: "Success",
-            symbol: symbol,
-            price: currentPrice
-        }
-        res.send(response_)
     });
 });
-
 
 app.listen(3000, () => {
     console.log('Server is running on port 3000');
